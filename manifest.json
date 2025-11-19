@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Treehouse Games">
+    <title>Treehouse Games</title>
+
+    <!-- Core Libs -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Custom Styles & Animations -->
+    <style>
+        body { background-color: #0f172a; overflow: hidden; user-select: none; touch-action: none; font-family: system-ui, -apple-system, sans-serif; }
+        
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes wiggle { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+        @keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes stretch { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.1) scaleX(0.9); } }
+        @keyframes pop { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-wiggle { animation: wiggle 0.3s ease-in-out infinite; }
+        .animate-jump { animation: jump 0.5s ease-in-out; }
+        .animate-spin-fast { animation: spin 0.8s linear; }
+        .animate-stretch { animation: stretch 0.6s ease-in-out infinite; }
+        
+        .game-container { position: absolute; inset: 0; display: flex; flex-direction: column; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo } = React;
+
+        // --- GABBA CHARACTER SVGS ---
+        const Muno = ({ className }) => (
+            <svg viewBox="0 0 100 160" className={className}>
+                <rect x="20" y="20" width="60" height="120" rx="30" fill="#ef4444" /> {/* Body */}
+                <circle cx="30" cy="40" r="3" fill="#b91c1c" opacity="0.5"/> {/* Bumps */}
+                <circle cx="70" cy="50" r="3" fill="#b91c1c" opacity="0.5"/>
+                <circle cx="30" cy="100" r="3" fill="#b91c1c" opacity="0.5"/>
+                <circle cx="70" cy="110" r="3" fill="#b91c1c" opacity="0.5"/>
+                <circle cx="50" cy="50" r="20" fill="white" /> {/* Eye */}
+                <circle cx="50" cy="50" r="6" fill="black" />
+                <path d="M40 90 Q50 100 60 90" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" /> {/* Mouth */}
+                <path d="M10 60 L20 80 L10 100" fill="none" stroke="#ef4444" strokeWidth="10" strokeLinecap="round" /> {/* Arm L */}
+                <path d="M90 60 L80 80 L90 100" fill="none" stroke="#ef4444" strokeWidth="10" strokeLinecap="round" /> {/* Arm R */}
+            </svg>
+        );
+
+        const Foofa = ({ className }) => (
+            <svg viewBox="0 0 100 140" className={className}>
+                <path d="M30 30 Q50 10 70 30 Q90 40 80 60 Q90 80 70 90 Q50 110 30 90 Q10 80 20 60 Q10 40 30 30" fill="#f472b6" /> {/* Flower Head */}
+                <path d="M35 90 L35 130" stroke="#f472b6" strokeWidth="12" strokeLinecap="round" /> {/* Leg */}
+                <path d="M65 90 L65 130" stroke="#f472b6" strokeWidth="12" strokeLinecap="round" /> {/* Leg */}
+                <circle cx="40" cy="55" r="4" fill="black" /> {/* Eyes */}
+                <circle cx="60" cy="55" r="4" fill="black" />
+                <path d="M45 65 Q50 70 55 65" fill="none" stroke="black" strokeWidth="2" /> {/* Smile */}
+                <circle cx="50" cy="25" r="5" fill="#fce7f3" /> {/* Flower Top */}
+            </svg>
+        );
+
+        const Brobee = ({ className }) => (
+            <svg viewBox="0 0 100 120" className={className}>
+                <rect x="20" y="20" width="60" height="80" rx="10" fill="#22c55e" /> {/* Body */}
+                <rect x="20" y="35" width="60" height="10" fill="#16a34a" /> {/* Stripes */}
+                <rect x="20" y="55" width="60" height="10" fill="#16a34a" />
+                <rect x="20" y="75" width="60" height="10" fill="#16a34a" />
+                <path d="M20 20 L30 10 L40 20 L50 10 L60 20 L70 10 L80 20" fill="#22c55e" /> {/* Hair */}
+                <circle cx="35" cy="45" r="4" fill="black" /> {/* Eyes */}
+                <circle cx="65" cy="45" r="4" fill="black" />
+                <path d="M30 50 Q50 20 70 50" fill="none" stroke="black" strokeWidth="2" /> {/* Unibrow */}
+                <path d="M40 70 Q50 80 60 70" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" /> {/* Mouth */}
+                <path d="M10 40 L20 60" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" /> {/* Arm */}
+                <path d="M90 40 L80 60" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
+            </svg>
+        );
+
+        const Toodee = ({ className }) => (
+            <svg viewBox="0 0 100 140" className={className}>
+                <path d="M20 30 L20 110 Q50 120 80 110 L80 30 Q50 20 20 30" fill="#3b82f6" /> {/* Body */}
+                <path d="M20 30 L10 10 L30 25" fill="#3b82f6" /> {/* Ear L */}
+                <path d="M80 30 L90 10 L70 25" fill="#3b82f6" /> {/* Ear R */}
+                <circle cx="40" cy="50" r="5" fill="black" /> {/* Eyes */}
+                <circle cx="60" cy="50" r="5" fill="black" />
+                <path d="M40 70 L60 70 L50 80 Z" fill="white" /> {/* Tooth */}
+                <path d="M30 70 Q50 85 70 70" fill="none" stroke="black" strokeWidth="2" /> {/* Smile */}
+                <path d="M80 80 Q100 70 90 50" fill="none" stroke="#3b82f6" strokeWidth="8" strokeLinecap="round" /> {/* Tail */}
+            </svg>
+        );
+
+        const Plex = ({ className }) => (
+            <svg viewBox="0 0 100 140" className={className}>
+                <rect x="25" y="30" width="50" height="40" rx="5" fill="#fbbf24" stroke="#d97706" strokeWidth="2" /> {/* Head */}
+                <rect x="30" y="75" width="40" height="50" rx="5" fill="#fbbf24" stroke="#d97706" strokeWidth="2" /> {/* Body */}
+                <line x1="50" y1="30" x2="50" y2="10" stroke="#1f2937" strokeWidth="4" /> {/* Antenna */}
+                <circle cx="50" cy="10" r="4" fill="#ef4444" />
+                <circle cx="40" cy="50" r="5" fill="white" stroke="black" strokeWidth="2" /> {/* Eyes */}
+                <circle cx="60" cy="50" r="5" fill="white" stroke="black" strokeWidth="2" />
+                <rect x="42" y="60" width="16" height="4" fill="#1f2937" /> {/* Mouth */}
+                <circle cx="50" cy="95" r="12" fill="#333" /> {/* Dial */}
+                <circle cx="50" cy="95" r="8" fill="#ef4444" /> 
+                <path d="M15 80 L30 85" stroke="#fbbf24" strokeWidth="8" strokeLinecap="round" /> {/* Arm */}
+                <path d="M85 80 L70 85" stroke="#fbbf24" strokeWidth="8" strokeLinecap="round" />
+            </svg>
+        );
+
+        // --- FAMILY PETS & TOYS ---
+        const JunoDog = ({ className }) => (
+            <svg viewBox="0 0 100 100" className={className}>
+                <path d="M30 40 L20 10 L40 25 L60 25 L80 10 L70 40" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="2" />
+                <circle cx="50" cy="50" r="35" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="2" />
+                <circle cx="35" cy="45" r="4" fill="#334155" /> <circle cx="65" cy="45" r="4" fill="#334155" />
+                <path d="M45 60 Q50 65 55 60" fill="none" stroke="#334155" strokeWidth="3" />
+                <ellipse cx="50" cy="55" rx="6" ry="4" fill="#1e293b" />
+            </svg>
+        );
+        const MiloDog = ({ className }) => (
+            <svg viewBox="0 0 100 100" className={className}>
+                 <path d="M30 40 L20 10 L40 25 L60 25 L80 10 L70 40" fill="#1e293b" stroke="#0f172a" strokeWidth="2" /> 
+                <circle cx="50" cy="50" r="35" fill="#0f172a" /> <path d="M30 50 Q50 80 70 50" fill="#f8fafc" />
+                <circle cx="35" cy="45" r="4" fill="#f8fafc" /> <circle cx="65" cy="45" r="4" fill="#f8fafc" />
+                <circle cx="35" cy="45" r="2" fill="#3b82f6" /> <circle cx="65" cy="45" r="2" fill="#3b82f6" />
+                <ellipse cx="50" cy="55" rx="6" ry="4" fill="#000" />
+            </svg>
+        );
+        const WeasleyCat = ({ className }) => (
+            <svg viewBox="0 0 100 100" className={className}>
+                <path d="M25 30 L20 5 L40 20 L60 20 L80 5 L75 30" fill="#f97316" />
+                <circle cx="50" cy="50" r="30" fill="#fb923c" /> <path d="M40 50 Q50 85 60 50" fill="#fff" />
+                <circle cx="38" cy="45" r="3" fill="#000" /> <circle cx="62" cy="45" r="3" fill="#000" />
+                <polygon points="50 55 48 52 52 52" fill="pink" />
+                <line x1="20" y1="55" x2="40" y2="55" stroke="#fff" strokeWidth="1" /> <line x1="60" y1="55" x2="80" y2="55" stroke="#fff" strokeWidth="1" />
+            </svg>
+        );
+        const PotterCat = ({ className }) => (
+            <svg viewBox="0 0 100 100" className={className}>
+                <path d="M25 30 L20 5 L40 20 L60 20 L80 5 L75 30" fill="#4b5563" />
+                <circle cx="50" cy="50" r="30" fill="#9ca3af" /> <path d="M50 20 L50 35" stroke="#374151" strokeWidth="3" />
+                <path d="M30 30 L40 40" stroke="#374151" strokeWidth="3" /> <path d="M70 30 L60 40" stroke="#374151" strokeWidth="3" />
+                <circle cx="38" cy="45" r="3" fill="#fcd34d" /> <circle cx="62" cy="45" r="3" fill="#fcd34d" />
+                <polygon points="50 55 48 52 52 52" fill="#000" />
+            </svg>
+        );
+        const BlackTruck = ({ className }) => (
+            <svg viewBox="0 0 100 60" className={className}>
+                <rect x="10" y="20" width="60" height="20" fill="#000" rx="2" /> <rect x="50" y="5" width="30" height="15" fill="#1f2937" rx="2" />
+                <rect x="55" y="8" width="20" height="10" fill="#38bdf8" /> <circle cx="25" cy="40" r="10" fill="#333" stroke="#111" strokeWidth="3" />
+                <circle cx="25" cy="40" r="4" fill="#555" /> <circle cx="65" cy="40" r="10" fill="#333" stroke="#111" strokeWidth="3" />
+                <circle cx="65" cy="40" r="4" fill="#555" /> <rect x="75" y="25" width="2" height="10" fill="red" /> <path d="M10 25 L5 25" stroke="yellow" strokeWidth="2" />
+            </svg>
+        );
+
+        // --- SOUND ENGINE ---
+        const playTone = (freq, type = 'sine', duration = 0.1) => {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContext) return;
+            const ctx = new AudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + duration);
+        };
+
+        const sounds = {
+            pop: () => playTone(400, 'triangle', 0.1),
+            correct: () => { playTone(523, 'sine', 0.1); setTimeout(() => playTone(784, 'sine', 0.2), 100); },
+            error: () => playTone(150, 'sawtooth', 0.3),
+            magic: () => { [880, 987, 1174, 1318].forEach((f, i) => setTimeout(() => playTone(f, 'sine', 0.3), i * 100)); },
+            drive: () => playTone(100, 'square', 0.05),
+            // Gabba Specific Tones
+            muno: () => { playTone(150, 'square', 0.1); setTimeout(() => playTone(100, 'square', 0.2), 100); }, // Rock
+            foofa: () => { playTone(600, 'sine', 0.3); setTimeout(() => playTone(800, 'sine', 0.3), 100); }, // Float
+            brobee: () => { playTone(100, 'triangle', 0.1); setTimeout(() => playTone(100, 'triangle', 0.1), 150); }, // Drum
+            toodee: () => { playTone(300, 'sawtooth', 0.2); setTimeout(() => playTone(600, 'sawtooth', 0.2), 200); }, // Slide
+            plex: () => { playTone(800, 'square', 0.05); setTimeout(() => playTone(800, 'square', 0.05), 100); setTimeout(() => playTone(800, 'square', 0.05), 200); } // Robot
+        };
+
+        // --- GAME 4: GABBA DANCE PARTY ---
+        const GabbaGame = ({ onBack }) => {
+            const [activeChar, setActiveChar] = useState(null);
+            const [bgColor, setBgColor] = useState('bg-orange-200');
+
+            const colors = ['bg-orange-200', 'bg-pink-200', 'bg-green-200', 'bg-blue-200', 'bg-yellow-200'];
+
+            const handleTap = (char, soundFn) => {
+                setActiveChar(char);
+                soundFn();
+                // Change background color like the show's transitions
+                setBgColor(colors[Math.floor(Math.random() * colors.length)]);
+                
+                // Reset animation after it plays
+                setTimeout(() => setActiveChar(null), 1000);
+            };
+
+            return (
+                <div className={`game-container ${bgColor} transition-colors duration-500 flex flex-col`}>
+                    <button onClick={onBack} className="absolute top-4 left-4 p-2 bg-white rounded-full shadow z-20">⬅ Exit</button>
+                    
+                    <div className="flex-grow flex items-center justify-center relative overflow-hidden">
+                        {/* Disco Floor */}
+                        <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-purple-500/50 to-transparent"></div>
+                        
+                        {/* Characters Container */}
+                        <div className="flex items-end justify-center gap-2 md:gap-8 pb-10 w-full px-4">
+                            
+                            {/* Muno */}
+                            <div onClick={() => handleTap('muno', sounds.muno)} className={`cursor-pointer transition-transform ${activeChar === 'muno' ? 'animate-jump' : 'hover:scale-105'}`}>
+                                <Muno className="h-32 md:h-48 drop-shadow-xl" />
+                            </div>
+
+                            {/* Foofa */}
+                            <div onClick={() => handleTap('foofa', sounds.foofa)} className={`cursor-pointer transition-transform ${activeChar === 'foofa' ? 'animate-float' : 'hover:scale-105'}`}>
+                                <Foofa className="h-28 md:h-40 drop-shadow-xl" />
+                            </div>
+
+                            {/* Brobee */}
+                            <div onClick={() => handleTap('brobee', sounds.brobee)} className={`cursor-pointer transition-transform ${activeChar === 'brobee' ? 'animate-wiggle' : 'hover:scale-105'}`}>
+                                <Brobee className="h-24 md:h-36 drop-shadow-xl" />
+                            </div>
+
+                            {/* Toodee */}
+                            <div onClick={() => handleTap('toodee', sounds.toodee)} className={`cursor-pointer transition-transform ${activeChar === 'toodee' ? 'animate-stretch' : 'hover:scale-105'}`}>
+                                <Toodee className="h-28 md:h-40 drop-shadow-xl" />
+                            </div>
+
+                            {/* Plex */}
+                            <div onClick={() => handleTap('plex', sounds.plex)} className={`cursor-pointer transition-transform ${activeChar === 'plex' ? 'animate-spin-fast' : 'hover:scale-105'}`}>
+                                <Plex className="h-32 md:h-48 drop-shadow-xl" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div className="bg-white/50 p-4 text-center font-bold text-slate-700 text-xl backdrop-blur-md">
+                        TAP TO DANCE! 🎵
+                    </div>
+                </div>
+            );
+        };
+
+        // --- EXISTING GAMES (Retained) ---
+        const CoopGame = ({ onBack }) => {
+            const [items, setItems] = useState([]);
+            const [foundCount, setFoundCount] = useState(0);
+            const [message, setMessage] = useState("Tap the Hay to find Eggs!");
+            useEffect(() => {
+                setItems([
+                    { id: 1, type: 'hay', hidden: 'egg', x: 20, y: 40, revealed: false },
+                    { id: 2, type: 'hay', hidden: 'weasley', x: 50, y: 40, revealed: false },
+                    { id: 3, type: 'hay', hidden: 'egg', x: 80, y: 40, revealed: false },
+                ]);
+            }, []);
+            const handleTap = (id) => {
+                setItems(prev => prev.map(item => {
+                    if (item.id === id && !item.revealed) {
+                        sounds.pop();
+                        if (item.hidden === 'egg') { setFoundCount(c => c + 1); sounds.correct(); } 
+                        else if (item.hidden === 'weasley') { setMessage("You found Weasley!"); sounds.magic(); }
+                        return { ...item, revealed: true };
+                    }
+                    return item;
+                }));
+            };
+            return (
+                <div className="game-container bg-sky-200">
+                    <div className="p-4 flex justify-between items-center bg-amber-800/20">
+                        <button onClick={onBack} className="p-2 bg-white rounded-full shadow">⬅ Back</button>
+                        <h2 className="text-xl font-bold text-amber-900 font-serif">{message}</h2>
+                        <div className="flex gap-1">{[...Array(foundCount)].map((_,i) => <span key={i} className="text-2xl">🥚</span>)}</div>
+                    </div>
+                    <div className="flex-grow relative flex items-end justify-center pb-20">
+                        <div className="absolute inset-0 flex flex-col justify-end opacity-30 pointer-events-none">
+                            <div className="w-full h-1/3 bg-amber-100 border-t-4 border-amber-900"></div>
+                            <div className="absolute inset-0" style={{backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px', opacity: 0.2}}></div>
+                        </div>
+                        {items.map(item => (
+                            <div key={item.id} onClick={() => handleTap(item.id)} className="absolute transition-all duration-500 cursor-pointer" style={{ left: `${item.x}%`, top: `${item.y}%`, transform: item.revealed ? 'translateY(-100px) rotate(10deg)' : 'translateY(0)', opacity: item.revealed ? 0 : 1 }}>
+                                <div className="w-32 h-24 bg-yellow-600 rounded-lg border-4 border-yellow-800 flex items-center justify-center shadow-xl"><span className="text-4xl">🌾</span></div>
+                            </div>
+                        ))}
+                        {items.map(item => (
+                            <div key={`hidden-${item.id}`} className="absolute" style={{ left: `${item.x}%`, top: `${item.y}%` }}>
+                                {item.hidden === 'egg' && <span className="text-5xl drop-shadow-lg animate-bounce">🥚</span>}
+                                {item.hidden === 'weasley' && <WeasleyCat className="w-24 h-24 animate-bounce" />}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const TruckGame = ({ onBack }) => {
+            const [truckY, setTruckY] = useState(0);
+            const [rocks, setRocks] = useState([100, 200, 300]);
+            const [score, setScore] = useState(0);
+            const [gameOver, setGameOver] = useState(false);
+            const requestRef = useRef();
+            const jump = () => { if (truckY === 0 && !gameOver) { setTruckY(100); sounds.drive(); setTimeout(() => setTruckY(0), 600); } };
+            useEffect(() => {
+                const animate = () => {
+                    if (gameOver) return;
+                    setRocks(prev => {
+                        const newRocks = prev.map(x => x - 1.5);
+                        if (newRocks[0] < -20) { newRocks.shift(); newRocks.push(newRocks[newRocks.length-1] + 60 + Math.random() * 40); setScore(s => s + 1); if (score % 3 === 0) sounds.correct(); }
+                        return newRocks;
+                    });
+                    requestRef.current = requestAnimationFrame(animate);
+                };
+                requestRef.current = requestAnimationFrame(animate);
+                return () => cancelAnimationFrame(requestRef.current);
+            }, [gameOver, score]);
+            useEffect(() => {
+                const truckLeft = 10; const truckRight = 30; const rockWidth = 10;
+                rocks.forEach(rockX => { if (rockX < truckRight && rockX + rockWidth > truckLeft) { if (truckY < 50) { setGameOver(true); sounds.error(); } } });
+            }, [rocks, truckY]);
+            return (
+                <div className="game-container bg-sky-300 overflow-hidden" onPointerDown={jump}>
+                    <div className="absolute top-4 left-4 z-20"><button onClick={onBack} className="p-2 bg-white rounded-full shadow mb-2">⬅ Exit</button><div className="bg-yellow-400 px-4 py-2 rounded-full font-bold border-2 border-yellow-600">Cookies: {score} 🍪</div></div>
+                    <div className="absolute bottom-0 w-full h-24 bg-green-600 border-t-8 border-green-700"></div><div className="absolute bottom-24 w-full h-12 bg-gray-600"></div><div className="absolute bottom-32 w-full border-t-2 border-dashed border-white opacity-50"></div>
+                    <div className="absolute left-[10%] bottom-24 transition-transform duration-300 ease-in-out z-10" style={{ transform: `translateY(-${truckY}px)` }}><BlackTruck className="w-48 h-28" /><div className="text-white font-bold absolute top-2 left-14 text-xs">EE's Truck</div></div>
+                    {rocks.map((x, i) => (<div key={i} className="absolute bottom-24 bg-gray-700 rounded-full w-12 h-10 flex items-center justify-center" style={{ left: `${x}%` }}>🪨</div>))}
+                    {gameOver && (<div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center z-50"><div className="bg-white p-8 rounded-2xl text-center animate-pop"><h2 className="text-3xl font-bold text-slate-800 mb-4">Bump!</h2><p className="text-xl mb-6">Isla collected {score} cookies for Evie!</p><button onClick={() => { setGameOver(false); setScore(0); setRocks([100, 200, 300]); }} className="bg-green-500 text-white py-3 px-8 rounded-xl text-xl font-bold shadow-lg">Drive Again 🚚</button></div></div>)}
+                    {!gameOver && <div className="absolute bottom-4 w-full text-center text-white font-bold animate-pulse">TAP TO JUMP!</div>}
+                </div>
+            );
+        };
+
+        const SpellGame = ({ onBack }) => {
+            const [points, setPoints] = useState([]);
+            const [completed, setCompleted] = useState(false);
+            const boxRef = useRef(null);
+            const handleMove = (e) => {
+                if (completed) return;
+                const touch = e.touches ? e.touches[0] : e;
+                const rect = boxRef.current.getBoundingClientRect();
+                const x = touch.clientX - rect.left; const y = touch.clientY - rect.top;
+                setPoints(prev => [...prev, { x, y }]);
+                if (points.length > 50) { setCompleted(true); sounds.magic(); }
+            };
+            const reset = () => { setPoints([]); setCompleted(false); };
+            return (
+                <div className="game-container bg-slate-900 flex items-center justify-center touch-none">
+                    <button onClick={onBack} className="absolute top-4 left-4 p-2 bg-slate-700 text-white rounded-full">⬅ Back</button>
+                    <h2 className="absolute top-8 text-2xl text-yellow-400 font-serif tracking-widest">Cast Lumos! 🪄</h2>
+                    <div ref={boxRef} className="relative w-80 h-80 bg-slate-800 rounded-xl border-4 border-slate-700 shadow-2xl overflow-hidden" onPointerMove={handleMove} onPointerDown={() => { setPoints([]); setCompleted(false); }}>
+                        {!completed && (<div className="absolute inset-0 flex items-center justify-center opacity-20"><div className="w-48 h-48 rounded-full border-8 border-dashed border-white animate-spin-slow"></div></div>)}
+                        <svg className="absolute inset-0 w-full h-full pointer-events-none"><polyline points={points.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="#fde047" strokeWidth="6" strokeLinecap="round" /></svg>
+                        <div className={`absolute inset-0 bg-white transition-opacity duration-1000 flex flex-col items-center justify-center ${completed ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}><PotterCat className="w-40 h-40 mb-4 animate-bounce" /><div className="text-3xl font-bold text-slate-800">Potter appeared!</div><button onClick={reset} className="mt-6 bg-purple-600 text-white px-6 py-2 rounded-full font-bold">Cast Again</button></div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- MAIN MENU ---
+        const MainMenu = ({ onSelect }) => (
+            <div className="game-container bg-[#fef3c7] flex flex-col items-center justify-center">
+                <h1 className="text-4xl md:text-5xl font-black text-green-800 mb-2 drop-shadow-sm text-center">Treehouse Games</h1>
+                <p className="text-green-700 font-bold mb-8 opacity-70">For Isla & Evie</p>
+
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-4xl px-4">
+                    
+                    <button onClick={() => onSelect('coop')} className="bg-orange-100 border-b-8 border-orange-300 p-4 rounded-3xl flex flex-col items-center active:translate-y-2 active:border-b-0 transition-all">
+                        <div className="text-5xl mb-2">🐔</div>
+                        <span className="text-lg font-bold text-orange-800 leading-tight">Mama's<br/>Coop</span>
+                    </button>
+
+                    <button onClick={() => onSelect('truck')} className="bg-sky-100 border-b-8 border-sky-300 p-4 rounded-3xl flex flex-col items-center active:translate-y-2 active:border-b-0 transition-all">
+                        <div className="text-5xl mb-2">🚚</div>
+                        <span className="text-lg font-bold text-sky-800 leading-tight">Evie's<br/>Truck</span>
+                    </button>
+
+                    <button onClick={() => onSelect('spell')} className="bg-purple-100 border-b-8 border-purple-300 p-4 rounded-3xl flex flex-col items-center active:translate-y-2 active:border-b-0 transition-all">
+                        <div className="text-5xl mb-2">🪄</div>
+                        <span className="text-lg font-bold text-purple-800 leading-tight">Magic<br/>Spells</span>
+                    </button>
+
+                    <button onClick={() => onSelect('gabba')} className="bg-green-100 border-b-8 border-green-300 p-4 rounded-3xl flex flex-col items-center active:translate-y-2 active:border-b-0 transition-all">
+                        <div className="text-5xl mb-2">🎵</div>
+                        <span className="text-lg font-bold text-green-800 leading-tight">Gabba<br/>Party</span>
+                    </button>
+
+                </div>
+
+                <div className="absolute bottom-0 w-full flex justify-between px-4 pointer-events-none opacity-50">
+                   <JunoDog className="w-20 h-20 translate-y-2" />
+                   <MiloDog className="w-20 h-20 translate-y-2" />
+                </div>
+            </div>
+        );
+
+        const App = () => {
+            const [game, setGame] = useState(null);
+            const [loading, setLoading] = useState(true);
+
+            useEffect(() => { setTimeout(() => setLoading(false), 2500); }, []);
+
+            if (loading) {
+                return (
+                    <div className="fixed inset-0 bg-slate-900 flex flex-col items-center justify-center text-yellow-300 z-50">
+                         <div className="text-6xl animate-bounce mb-4">🪄</div>
+                         <div className="text-2xl font-serif tracking-widest animate-pulse">Loading Magic...</div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="w-full h-full relative">
+                    {!game && <MainMenu onSelect={setGame} />}
+                    {game === 'coop' && <CoopGame onBack={() => setGame(null)} />}
+                    {game === 'truck' && <TruckGame onBack={() => setGame(null)} />}
+                    {game === 'spell' && <SpellGame onBack={() => setGame(null)} />}
+                    {game === 'gabba' && <GabbaGame onBack={() => setGame(null)} />}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+
+
