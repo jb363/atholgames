@@ -1,9 +1,9 @@
-const CACHE_NAME = 'treehouse-games-v3'; // Updated to v3 to force refresh
+const CACHE_NAME = 'treehouse-games-v6-gabba';
 
-// Cache ingredients
 const CACHE_URLS = [
   './',
   './index.html',
+  './manifest.json',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/react@18/umd/react.production.min.js',
   'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
@@ -11,7 +11,7 @@ const CACHE_URLS = [
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); // Activate immediately
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(CACHE_URLS))
   );
