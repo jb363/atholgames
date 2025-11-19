@@ -3,461 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#15803d">
+    <meta name="theme-color" content="#0f172a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Treehouse Games">
     <title>Treehouse Games</title>
 
-    <!-- Tailwind & React -->
+    <!-- Core Libs -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="manifest" href="manifest.json">
 
-    <!-- Custom Treehouse Icon -->
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjY0IiByeT0iNjQiIGZpbGw9IiMxNTgwM2QiLz48cGF0aCBkPSJNMjU2IDY0TDMyIDI1Nmg0NDhMMjU2IDY0eiIgZmlsbD0iIzg1NGQwZSIvPjxyZWN0IHg9IjEyOCIgeT0iMjU2IiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjE5MiIgZmlsbD0iI2ExNjIwNyIvPjxyZWN0IHg9IjIyNCIgeT0iMzIwIiB3aWR0aD0iNjQiIGhlaWdodD0iMTI4IiBmaWxsPSIjNDUxYTAzIi8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMTkyIiByPSIzMiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==">
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjY0IiByeT0iNjQiIGZpbGw9IiMxNTgwM2QiLz48cGF0aCBkPSJNMjU2IDY0TDMyIDI1Nmg0NDhMMjU2IDY0eiIgZmlsbD0iIzg1NGQwZSIvPjxyZWN0IHg9IjEyOCIgeT0iMjU2IiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjE5MiIgZmlsbD0iI2ExNjIwNyIvPjxyZWN0IHg9IjIyNCIgeT0iMzIwIiB3aWR0aD0iNjQiIGhlaWdodD0iMTI4IiBmaWxsPSIjNDUxYTAzIi8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMTkyIiByPSIzMiIgZmlsbD0id2hpdGUiIG9wYWNpdHk9IjAuNSIvPjwvc3ZnPg==">
-    
-    <!-- Manifest with Treehouse Name -->
-    <link rel="manifest" href='data:application/json;base64,eyJuYW1lIjoiVHJlZWhvdXNlIEdhbWVzIiwic2hvcnRfbmFtZSI6IlRyZWVob3VzZSIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSFpwWlhQQmIza3BJamd3TURBZ05URXlJalU4Y21VamRHVjRQU0kzTWpBaWRHbGtaQzF5ZUMwek1pMXllUzB6TWlJbWm1bHNiRDBpTXpVeU16QWlMMzQ4Y0dGMGFDQmtQU0pOTWpVMklEWTBURE15SURJMU5tZzBORZnhN1pVMkSURJMEVpSW1acGJHd3BJaUk0TlRSa01HVWlMMzQ4Y21VamRHVjRQU0l4TWpnZ0lUbHpQU0l5TlRZaWRHbGtaQzB5TlRZaWGFHVnBaMmgwUFNJeE9USWlJR1pwYkd3cElpSmhNVFl5TURjaUx6NDhjbVVqZEdWNFBTSXlXalFnSW5rOUlqTXlNQ0l4ZDJsa2RHZzlJalkwSWdoaFpXbG5hSFE5SWpFeU9DSWdWm1sc2JEMGlJelExTVZFd015IvPjxwYXRoIGZpbGw9IndoaXRlIiBkPSJNMjU2IDE5MkwzMiAyNTZoNDQ4TDI1NiA2NHoiIG9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==","sizes":"192x192","type":"image/svg+xml"}],"start_url":"./","display":"standalone","background_color":"#15803d","theme_color":"#15803d"}'>
-
+    <!-- Custom Styles & Animations -->
     <style>
-        body { background-color: #f0fdf4; overflow: hidden; user-select: none; -webkit-user-select: none; touch-action: none; margin: 0; padding: 0; }
+        body { background-color: #0f172a; overflow: hidden; user-select: none; touch-action: none; font-family: system-ui, -apple-system, sans-serif; }
         
-        /* --- MAGICAL LOADING SCREEN STYLES --- */
-        #loading {
-            position: fixed; inset: 0; z-index: 9999;
-            background: radial-gradient(circle at 50% 50%, #2e1065 0%, #020617 100%);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            color: #fde047; font-family: serif;
-            transition: opacity 0.8s ease-out, transform 0.8s ease-in;
-        }
-        .wand-container { position: relative; width: 160px; height: 160px; margin-bottom: 20px; }
-        .wand { width: 100%; height: 100%; transform-origin: 10% 90%; animation: swish 2.5s ease-in-out infinite; filter: drop-shadow(0 0 20px rgba(253, 224, 71, 0.4)); }
-        @keyframes swish { 0% { transform: rotate(0deg); } 20% { transform: rotate(-15deg); } 40% { transform: rotate(35deg); } 50% { transform: rotate(35deg); } 70% { transform: rotate(0deg); } 100% { transform: rotate(0deg); } }
-        .sparkle { position: absolute; background: white; border-radius: 50%; opacity: 0; box-shadow: 0 0 8px #fff, 0 0 12px #fde047; }
-        .s-group { position: absolute; top: 0; right: 0; width: 100%; height: 100%; pointer-events: none; }
-        @keyframes twinkle-move { 0% { opacity: 0; transform: scale(0) translate(0, 0); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0) translate(var(--tx), var(--ty)); } }
-        .bg-star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; animation: blink 3s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; box-shadow: 0 0 5px white; } }
-        .loading-text { font-size: 1.5rem; letter-spacing: 0.1em; color: #e9d5ff; text-shadow: 0 0 10px rgba(168, 85, 247, 0.5); animation: pulse 2s infinite; z-index: 10; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        #error-display { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #ef4444; color: white; padding: 10px; font-family: monospace; font-size: 12px; z-index: 10000; }
+        /* Animations */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes wiggle { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+        @keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes stretch { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.1) scaleX(0.9); } }
+        @keyframes pop { 0% { transform: scale(0); } 80% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        
+        .animate-float { animation: float 3s ease-in-out infinite; }
+        .animate-wiggle { animation: wiggle 0.3s ease-in-out infinite; }
+        .animate-jump { animation: jump 0.5s ease-in-out; }
+        .animate-spin-fast { animation: spin 0.8s linear; }
+        .animate-stretch { animation: stretch 0.6s ease-in-out infinite; }
+        
+        .game-container { position: absolute; inset: 0; display: flex; flex-direction: column; }
     </style>
 </head>
 <body>
     <div id="root"></div>
-    <div id="error-display"></div>
-    
-    <!-- MAGICAL LOADING SCREEN -->
-    <div id="loading">
-        <div class="bg-star" style="top:10%; left:20%; animation-delay:0s"></div>
-        <div class="bg-star" style="top:30%; left:80%; animation-delay:1s"></div>
-        <div class="bg-star" style="top:70%; left:10%; animation-delay:2s"></div>
-        <div class="wand-container">
-            <div class="s-group">
-                <div class="sparkle" style="width: 8px; height: 8px; top: 20px; right: 20px; --tx: 20px; --ty: -20px; animation: twinkle-move 2.5s infinite 0.9s;"></div>
-                <div class="sparkle" style="width: 5px; height: 5px; top: 30px; right: 10px; --tx: 30px; --ty: 0px; animation: twinkle-move 2.5s infinite 1.0s;"></div>
-                <div class="sparkle" style="width: 6px; height: 6px; top: 10px; right: 30px; --tx: 0px; --ty: -30px; animation: twinkle-move 2.5s infinite 1.1s;"></div>
-            </div>
-            <svg class="wand" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="82" cy="18" r="15" fill="url(#glow)" opacity="0.5"><animate attributeName="opacity" values="0;0.8;0" dur="2.5s" repeatCount="indefinite"/></circle>
-                <defs><radialGradient id="glow"><stop offset="0%" stop-color="#fde047" /><stop offset="100%" stop-color="transparent" /></radialGradient></defs>
-                <path d="M25 75 L82 18 L85 21 L28 78 Z" fill="#5d4037" /> 
-                <circle cx="26" cy="76" r="6" fill="#3e2723" />
-                <circle cx="35" cy="67" r="4.5" fill="#3e2723" />
-                <path d="M30 72 L80 22" stroke="#a1887f" stroke-width="1" opacity="0.4" />
-            </svg>
-        </div>
-        <div class="loading-text">Making Magic...</div>
-    </div>
 
     <script type="text/babel">
-        window.onerror = function(msg) {
-            const errBox = document.getElementById('error-display');
-            errBox.style.display = 'block';
-            errBox.innerText = "Magic Error: " + msg;
-            document.getElementById('loading').style.display = 'none';
-        };
+        const { useState, useEffect, useRef, useMemo } = React;
 
-        const { useState, useEffect, useRef } = React;
-
-        // --- INTERNAL ICONS (No External Dependency) ---
-        const IconWrapper = ({ children, size = 24, className = "" }) => (
-            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        // --- GABBA CHARACTER SVGS ---
+        const Muno = ({ className }) => (
+            <svg viewBox="0 0 100 160" className={className}>
+                <rect x="20" y="20" width="60" height="120" rx="30" fill="#ef4444" /> {/* Body */}
+                <circle cx="30" cy="40" r="3" fill="#b91c1c" opacity="0.5"/> {/* Bumps */}
+                <circle cx="70" cy="50" r="3" fill="#b91c1c" opacity="0.5"/>
+                <circle cx="30" cy="100" r="3" fill="#b91c1c" opacity="0.5"/>
+                <circle cx="70" cy="110" r="3" fill="#b91c1c" opacity="0.5"/>
+                <circle cx="50" cy="50" r="20" fill="white" /> {/* Eye */}
+                <circle cx="50" cy="50" r="6" fill="black" />
+                <path d="M40 90 Q50 100 60 90" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" /> {/* Mouth */}
+                <path d="M10 60 L20 80 L10 100" fill="none" stroke="#ef4444" strokeWidth="10" strokeLinecap="round" /> {/* Arm L */}
+                <path d="M90 60 L80 80 L90 100" fill="none" stroke="#ef4444" strokeWidth="10" strokeLinecap="round" /> {/* Arm R */}
+            </svg>
         );
 
-        const Star = (props) => <IconWrapper {...props}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></IconWrapper>;
-        const Home = (props) => <IconWrapper {...props}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></IconWrapper>;
-        const Zap = (props) => <IconWrapper {...props}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></IconWrapper>;
-        const CloudRain = (props) => <IconWrapper {...props}><line x1="16" y1="13" x2="16" y2="21" /><line x1="8" y1="13" x2="8" y2="21" /><line x1="12" y1="15" x2="12" y2="23" /><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25" /></IconWrapper>;
-        const Play = (props) => <IconWrapper {...props}><polygon points="5 3 19 12 5 21 5 3" /></IconWrapper>;
-        const Music = (props) => <IconWrapper {...props}><path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" /></IconWrapper>;
-        const Hammer = (props) => <IconWrapper {...props}><path d="M13.5 9L11 6.5 6 11.5 8.5 14l5-2.5z" /><path d="M6 11.5L3 14.5l2.5 2.5 3-3" /><path d="M13.5 9l7.5 7.5-2 2-7.5-7.5" /></IconWrapper>;
-        const ArrowLeft = (props) => <IconWrapper {...props}><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></IconWrapper>;
-        const Repeat = (props) => <IconWrapper {...props}><polyline points="17 1 21 5 17 9" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><polyline points="7 23 3 19 7 15" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></IconWrapper>;
-        const Check = (props) => <IconWrapper {...props}><polyline points="20 6 9 17 4 12" /></IconWrapper>;
-        const Truck = (props) => <IconWrapper {...props}><rect x="1" y="3" width="15" height="13" /><polygon points="16 8 20 8 23 11 23 16 16 16 16 8" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" /></IconWrapper>;
+        const Foofa = ({ className }) => (
+            <svg viewBox="0 0 100 140" className={className}>
+                <path d="M30 30 Q50 10 70 30 Q90 40 80 60 Q90 80 70 90 Q50 110 30 90 Q10 80 20 60 Q10 40 30 30" fill="#f472b6" /> {/* Flower Head */}
+                <path d="M35 90 L35 130" stroke="#f472b6" strokeWidth="12" strokeLinecap="round" /> {/* Leg */}
+                <path d="M65 90 L65 130" stroke="#f472b6" strokeWidth="12" strokeLinecap="round" /> {/* Leg */}
+                <circle cx="40" cy="55" r="4" fill="black" /> {/* Eyes */}
+                <circle cx="60" cy="55" r="4" fill="black" />
+                <path d="M45 65 Q50 70 55 65" fill="none" stroke="black" strokeWidth="2" /> {/* Smile */}
+                <circle cx="50" cy="25" r="5" fill="#fce7f3" /> {/* Flower Top */}
+            </svg>
+        );
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('SW registered'))
-                    .catch(err => console.log('SW fail', err));
-            });
-        }
+        const Brobee = ({ className }) => (
+            <svg viewBox="0 0 100 120" className={className}>
+                <rect x="20" y="20" width="60" height="80" rx="10" fill="#22c55e" /> {/* Body */}
+                <rect x="20" y="35" width="60" height="10" fill="#16a34a" /> {/* Stripes */}
+                <rect x="20" y="55" width="60" height="10" fill="#16a34a" />
+                <rect x="20" y="75" width="60" height="10" fill="#16a34a" />
+                <path d="M20 20 L30 10 L40 20 L50 10 L60 20 L70 10 L80 20" fill="#22c55e" /> {/* Hair */}
+                <circle cx="35" cy="45" r="4" fill="black" /> {/* Eyes */}
+                <circle cx="65" cy="45" r="4" fill="black" />
+                <path d="M30 50 Q50 20 70 50" fill="none" stroke="black" strokeWidth="2" /> {/* Unibrow */}
+                <path d="M40 70 Q50 80 60 70" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" /> {/* Mouth */}
+                <path d="M10 40 L20 60" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" /> {/* Arm */}
+                <path d="M90 40 L80 60" stroke="#22c55e" strokeWidth="8" strokeLinecap="round" />
+            </svg>
+        );
 
-        const dismissLoader = () => {
-             const loader = document.getElementById('loading');
-             if (loader && !loader.classList.contains('dismissed')) {
-                 loader.classList.add('dismissed');
-                 loader.style.opacity = '0';
-                 loader.style.transform = 'scale(1.5)'; 
-                 setTimeout(() => loader.remove(), 800);
-             }
-        };
-        setTimeout(dismissLoader, 3000);
+        const Toodee = ({ className }) => (
+            <svg viewBox="0 0 100 140" className={className}>
+                <path d="M20 30 L20 110 Q50 120 80 110 L80 30 Q50 20 20 30" fill="#3b82f6" /> {/* Body */}
+                <path d="M20 30 L10 10 L30 25" fill="#3b82f6" /> {/* Ear L */}
+                <path d="M80 30 L90 10 L70 25" fill="#3b82f6" /> {/* Ear R */}
+                <circle cx="40" cy="50" r="5" fill="black" /> {/* Eyes */}
+                <circle cx="60" cy="50" r="5" fill="black" />
+                <path d="M40 70 L60 70 L50 80 Z" fill="white" /> {/* Tooth */}
+                <path d="M30 70 Q50 85 70 70" fill="none" stroke="black" strokeWidth="2" /> {/* Smile */}
+                <path d="M80 80 Q100 70 90 50" fill="none" stroke="#3b82f6" strokeWidth="8" strokeLinecap="round" /> {/* Tail */}
+            </svg>
+        );
 
-        /** AUDIO SYSTEM **/
-        const playSound = (type) => {
+        const Plex = ({ className }) => (
+            <svg viewBox="0 0 100 140" className={className}>
+                <rect x="25" y="30" width="50" height="40" rx="5" fill="#fbbf24" stroke="#d97706" strokeWidth="2" /> {/* Head */}
+                <rect x="30" y="75" width="40" height="50" rx="5" fill="#fbbf24" stroke="#d97706" strokeWidth="2" /> {/* Body */}
+                <line x1="50" y1="30" x2="50" y2="10" stroke="#1f2937" strokeWidth="4" /> {/* Antenna */}
+                <circle cx="50" cy="10" r="4" fill="#ef4444" />
+                <circle cx="40" cy="50" r="5" fill="white" stroke="black" strokeWidth="2" /> {/* Eyes */}
+                <circle cx="60" cy="50" r="5" fill="white" stroke="black" strokeWidth="2" />
+                <rect x="42" y="60" width="16" height="4" fill="#1f2937" /> {/* Mouth */}
+                <circle cx="50" cy="95" r="12" fill="#333" /> {/* Dial */}
+                <circle cx="50" cy="95" r="8" fill="#ef4444" /> 
+                <path d="M15 80 L30 85" stroke="#fbbf24" strokeWidth="8" strokeLinecap="round" /> {/* Arm */}
+                <path d="M85 80 L70 85" stroke="#fbbf24" strokeWidth="8" strokeLinecap="round" />
+            </svg>
+        );
+
+        // --- FAMILY PETS & TOYS ---
+        const JunoDog = ({ className }) => (
+            <svg viewBox="0 0 100 100" className={className}>
+                <path d="M30 40 L20 10 L40 25 L60 25 L80 10 L70 40" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="2" />
+                <circle cx="50" cy="50" r="35" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="2" />
+                <circle cx="35" cy="45" r="4" fill="#334155" /> <circle cx="65" cy="45" r="4" fill="#334155" />
+                <path d="M45 60 Q50 65 55 60" fill="none" stroke="#334155" strokeWidth="3" />
+                <ellipse cx="50" cy="55" rx="6" ry="4" fill="#1e293b" />
+            </svg>
+        );
+        const MiloDog = ({ className }) => (
+            <svg viewBox="0 0 100 100" className={className}>
+                 <path d="M30 40 L20 10 L40 25 L60 25 L80 10 L70 40" fill="#1e293b" stroke="#0f172a" strokeWidth="2" /> 
+                <circle cx="50" cy="50" r="35" fill="#0f172a" /> <path d="M30 50 Q50 80 70 50" fill="#f8fafc" />
+                <circle cx="35" cy="45" r="4" fill="#f8fafc" /> <circle cx="65" cy="45" r="4" fill="#f8fafc" />
+                <circle cx="35" cy="45" r="2" fill="#3b82f6" /> <circle cx="65" cy="45" r="2" fill="#3b82f6" />
+                <ellipse cx="50" cy="55" rx="6" ry="4" fill="#000" />
+            </svg>
+        );
+        const WeasleyCat = ({ className }) => (
+            <svg viewBox="0 0 100 100" className={className}>
+                <path d="M25 30 L20 5 L40 20 L60 20 L80 5 L75 30" fill="#f97316" />
+                <circle cx="50" cy="50" r="30" fill="#fb923c" /> <path d="M40 50 Q50 85 60 50" fill="#fff" />
+                <circle cx="38" cy="45" r="3" fill="#000" /> <circle cx="62" cy="45" r="3" fill="#000" />
+                <polygon points="50 55 48 52 52 52" fill="pink" />
+                <line x1="20" y1="55" x2="40" y2="55" stroke="#fff" strokeWidth="1" /> <line x1="60" y1="55" x2="80" y2="55" stroke="#fff" strokeWidth="1" />
+            </svg>
+        );
+        const PotterCat = ({ className }) => (
+            <svg viewBox="0 0 100 100" className={className}>
+                <path d="M25 30 L20 5 L40 20 L60 20 L80 5 L75 30" fill="#4b5563" />
+                <circle cx="50" cy="50" r="30" fill="#9ca3af" /> <path d="M50 20 L50 35" stroke="#374151" strokeWidth="3" />
+                <path d="M30 30 L40 40" stroke="#374151" strokeWidth="3" /> <path d="M70 30 L60 40" stroke="#374151" strokeWidth="3" />
+                <circle cx="38" cy="45" r="3" fill="#fcd34d" /> <circle cx="62" cy="45" r="3" fill="#fcd34d" />
+                <polygon points="50 55 48 52 52 52" fill="#000" />
+            </svg>
+        );
+        const BlackTruck = ({ className }) => (
+            <svg viewBox="0 0 100 60" className={className}>
+                <rect x="10" y="20" width="60" height="20" fill="#000" rx="2" /> <rect x="50" y="5" width="30" height="15" fill="#1f2937" rx="2" />
+                <rect x="55" y="8" width="20" height="10" fill="#38bdf8" /> <circle cx="25" cy="40" r="10" fill="#333" stroke="#111" strokeWidth="3" />
+                <circle cx="25" cy="40" r="4" fill="#555" /> <circle cx="65" cy="40" r="10" fill="#333" stroke="#111" strokeWidth="3" />
+                <circle cx="65" cy="40" r="4" fill="#555" /> <rect x="75" y="25" width="2" height="10" fill="red" /> <path d="M10 25 L5 25" stroke="yellow" strokeWidth="2" />
+            </svg>
+        );
+
+        // --- SOUND ENGINE ---
+        const playTone = (freq, type = 'sine', duration = 0.1) => {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             if (!AudioContext) return;
             const ctx = new AudioContext();
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, ctx.currentTime);
+            gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
             osc.connect(gain);
             gain.connect(ctx.destination);
-            const now = ctx.currentTime;
-
-            if (type === 'pop') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(400, now);
-                gain.gain.setValueAtTime(0.1, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
-                osc.start(now);
-                osc.stop(now + 0.1);
-            } else if (type === 'splash') {
-                const bufferSize = ctx.sampleRate * 0.5;
-                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-                const data = buffer.getChannelData(0);
-                for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-                const noise = ctx.createBufferSource();
-                noise.buffer = buffer;
-                const noiseGain = ctx.createGain();
-                noise.connect(noiseGain);
-                noiseGain.connect(ctx.destination);
-                noiseGain.gain.setValueAtTime(0.2, now);
-                noiseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-                noise.start(now);
-            } else if (type === 'boing') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(300, now);
-                osc.frequency.exponentialRampToValueAtTime(500, now + 0.3);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.3);
-                osc.start(now);
-                osc.stop(now + 0.3);
-            } else if (type === 'win') {
-                [523, 659, 784, 1046].forEach((freq, i) => {
-                    const o = ctx.createOscillator();
-                    const g = ctx.createGain();
-                    o.connect(g);
-                    g.connect(ctx.destination);
-                    o.frequency.value = freq;
-                    g.gain.setValueAtTime(0.1, now + i * 0.15);
-                    g.gain.linearRampToValueAtTime(0, now + i * 0.15 + 0.5);
-                    o.start(now + i * 0.15);
-                    o.stop(now + i * 0.15 + 0.5);
-                });
-            }
+            osc.start();
+            osc.stop(ctx.currentTime + duration);
         };
 
-        const Draggable = ({ id, children, onDrop, className, style }) => {
-            const [position, setPosition] = useState({ x: 0, y: 0 });
-            const [isDragging, setIsDragging] = useState(false);
-            const startPos = useRef({ x: 0, y: 0 });
+        const sounds = {
+            pop: () => playTone(400, 'triangle', 0.1),
+            correct: () => { playTone(523, 'sine', 0.1); setTimeout(() => playTone(784, 'sine', 0.2), 100); },
+            error: () => playTone(150, 'sawtooth', 0.3),
+            magic: () => { [880, 987, 1174, 1318].forEach((f, i) => setTimeout(() => playTone(f, 'sine', 0.3), i * 100)); },
+            drive: () => playTone(100, 'square', 0.05),
+            // Gabba Specific Tones
+            muno: () => { playTone(150, 'square', 0.1); setTimeout(() => playTone(100, 'square', 0.2), 100); }, // Rock
+            foofa: () => { playTone(600, 'sine', 0.3); setTimeout(() => playTone(800, 'sine', 0.3), 100); }, // Float
+            brobee: () => { playTone(100, 'triangle', 0.1); setTimeout(() => playTone(100, 'triangle', 0.1), 150); }, // Drum
+            toodee: () => { playTone(300, 'sawtooth', 0.2); setTimeout(() => playTone(600, 'sawtooth', 0.2), 200); }, // Slide
+            plex: () => { playTone(800, 'square', 0.05); setTimeout(() => playTone(800, 'square', 0.05), 100); setTimeout(() => playTone(800, 'square', 0.05), 200); } // Robot
+        };
 
-            const handleDown = (e) => {
-                e.preventDefault();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                setIsDragging(true);
-                startPos.current = { x: clientX - position.x, y: clientY - position.y };
-                playSound('pop');
+        // --- GAME 4: GABBA DANCE PARTY ---
+        const GabbaGame = ({ onBack }) => {
+            const [activeChar, setActiveChar] = useState(null);
+            const [bgColor, setBgColor] = useState('bg-orange-200');
+
+            const colors = ['bg-orange-200', 'bg-pink-200', 'bg-green-200', 'bg-blue-200', 'bg-yellow-200'];
+
+            const handleTap = (char, soundFn) => {
+                setActiveChar(char);
+                soundFn();
+                // Change background color like the show's transitions
+                setBgColor(colors[Math.floor(Math.random() * colors.length)]);
+                
+                // Reset animation after it plays
+                setTimeout(() => setActiveChar(null), 1000);
             };
-            const handleMove = (e) => {
-                if (!isDragging) return;
-                e.preventDefault();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-                setPosition({ x: clientX - startPos.current.x, y: clientY - startPos.current.y });
-            };
-            const handleUp = (e) => {
-                if (!isDragging) return;
-                setIsDragging(false);
-                const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-                const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-                const success = onDrop(id, clientX, clientY);
-                if (!success) setPosition({ x: 0, y: 0 });
-            };
+
+            return (
+                <div className={`game-container ${bgColor} transition-colors duration-500 flex flex-col`}>
+                    <button onClick={onBack} className="absolute top-4 left-4 p-2 bg-white rounded-full shadow z-20">⬅ Exit</button>
+                    
+                    <div className="flex-grow flex items-center justify-center relative overflow-hidden">
+                        {/* Disco Floor */}
+                        <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-purple-500/50 to-transparent"></div>
+                        
+                        {/* Characters Container */}
+                        <div className="flex items-end justify-center gap-2 md:gap-8 pb-10 w-full px-4">
+                            
+                            {/* Muno */}
+                            <div onClick={() => handleTap('muno', sounds.muno)} className={`cursor-pointer transition-transform ${activeChar === 'muno' ? 'animate-jump' : 'hover:scale-105'}`}>
+                                <Muno className="h-32 md:h-48 drop-shadow-xl" />
+                            </div>
+
+                            {/* Foofa */}
+                            <div onClick={() => handleTap('foofa', sounds.foofa)} className={`cursor-pointer transition-transform ${activeChar === 'foofa' ? 'animate-float' : 'hover:scale-105'}`}>
+                                <Foofa className="h-28 md:h-40 drop-shadow-xl" />
+                            </div>
+
+                            {/* Brobee */}
+                            <div onClick={() => handleTap('brobee', sounds.brobee)} className={`cursor-pointer transition-transform ${activeChar === 'brobee' ? 'animate-wiggle' : 'hover:scale-105'}`}>
+                                <Brobee className="h-24 md:h-36 drop-shadow-xl" />
+                            </div>
+
+                            {/* Toodee */}
+                            <div onClick={() => handleTap('toodee', sounds.toodee)} className={`cursor-pointer transition-transform ${activeChar === 'toodee' ? 'animate-stretch' : 'hover:scale-105'}`}>
+                                <Toodee className="h-28 md:h-40 drop-shadow-xl" />
+                            </div>
+
+                            {/* Plex */}
+                            <div onClick={() => handleTap('plex', sounds.plex)} className={`cursor-pointer transition-transform ${activeChar === 'plex' ? 'animate-spin-fast' : 'hover:scale-105'}`}>
+                                <Plex className="h-32 md:h-48 drop-shadow-xl" />
+                            </div>
+
+                        </div>
+                    </div>
+                    <div className="bg-white/50 p-4 text-center font-bold text-slate-700 text-xl backdrop-blur-md">
+                        TAP TO DANCE! 🎵
+                    </div>
+                </div>
+            );
+        };
+
+        // --- EXISTING GAMES (Retained) ---
+        const CoopGame = ({ onBack }) => {
+            const [items, setItems] = useState([]);
+            const [foundCount, setFoundCount] = useState(0);
+            const [message, setMessage] = useState("Tap the Hay to find Eggs!");
             useEffect(() => {
-                if (isDragging) {
-                    window.addEventListener('pointermove', handleMove);
-                    window.addEventListener('touchmove', handleMove, { passive: false });
-                    window.addEventListener('touchend', handleUp);
-                    window.addEventListener('pointerup', handleUp);
-                }
-                return () => {
-                    window.removeEventListener('pointermove', handleMove);
-                    window.removeEventListener('touchmove', handleMove);
-                    window.removeEventListener('touchend', handleUp);
-                    window.removeEventListener('pointerup', handleUp);
-                };
-            }, [isDragging]);
-            return (
-                <div onPointerDown={handleDown} className={`${className} absolute cursor-grab active:cursor-grabbing touch-none z-50`} style={{transform: `translate(${position.x}px, ${position.y}px) scale(${isDragging ? 1.2 : 1})`, transition: isDragging ? 'none' : 'transform 0.3s ease-out', ...style}}>{children}</div>
-            );
-        };
-
-        /** LEVEL 1: HARRY POTTER **/
-        const HarryPotterLevel = ({ onWin }) => {
-            const [caught, setCaught] = useState(0);
-            const chestRef = useRef(null);
-            const keys = [{ id: 'k1', color: 'text-yellow-300' }, { id: 'k2', color: 'text-blue-300' }, { id: 'k3', color: 'text-white' }];
-
-            const handleDrop = (id, x, y) => {
-                const rect = chestRef.current.getBoundingClientRect();
-                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    setCaught(c => c + 1);
-                    playSound('success');
-                    if (caught + 1 === 3) setTimeout(onWin, 1000);
-                    return true;
-                }
-                return false;
-            };
-            return (
-                <div className="flex flex-col h-full bg-slate-900 relative overflow-hidden">
-                    <div className="absolute top-4 left-4 opacity-50 flex flex-col items-center"><div className="text-orange-400 text-4xl">🐱</div><div className="text-xs text-orange-300 font-bold">Weasley</div></div>
-                    <div className="absolute top-4 right-4 opacity-50 flex flex-col items-center"><div className="text-slate-600 text-4xl">🐱</div><div className="text-xs text-slate-400 font-bold">Potter</div></div>
-                    <div className="text-center mt-8 z-10"><h2 className="text-2xl text-yellow-400 font-serif tracking-widest">Catch the Keys!</h2></div>
-                    <div className="flex-grow flex items-center justify-center z-10">
-                        <div ref={chestRef} className="w-48 h-40 bg-amber-800 rounded-t-full border-4 border-yellow-600 flex flex-col items-center justify-center shadow-[0_0_40px_rgba(250,204,21,0.2)]">
-                            <div className="text-yellow-500 mb-2"><Zap fill="currentColor" size={32}/></div>
-                            <div className="text-white font-bold">{caught} / 3</div>
-                        </div>
-                    </div>
-                    <div className="absolute inset-0 pointer-events-none z-20">
-                        {keys.map((k, i) => (caught <= i && (
-                            <div key={k.id} className="pointer-events-auto">
-                                <Draggable id={k.id} onDrop={handleDrop} style={{ top: `${20 + i * 15}%`, left: `${10 + i * 30}%` }}>
-                                    <div className={`${k.color} animate-bounce p-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]`}><div className="relative"><div className="absolute -left-4 top-0 w-4 h-8 bg-white/30 rounded-full animate-pulse" /><div className="absolute -right-4 top-0 w-4 h-8 bg-white/30 rounded-full animate-pulse" /><div className="text-4xl">🗝️</div></div></div>
-                                </Draggable>
-                            </div>
-                        )))}
-                    </div>
-                </div>
-            );
-        };
-
-        /** LEVEL 2: PEPPA PIG **/
-        const PeppaLevel = ({ onWin }) => {
-            const [matched, setMatched] = useState([]);
-            const dropRefs = useRef({});
-            const items = [{ id: 'red', color: 'bg-red-500', bootColor: 'text-red-500' }, { id: 'yellow', color: 'bg-yellow-400', bootColor: 'text-yellow-500' }, { id: 'blue', color: 'bg-blue-500', bootColor: 'text-blue-500' }];
-
-            const handleDrop = (id, x, y) => {
-                const target = dropRefs.current[id];
-                if (!target) return false;
-                const rect = target.getBoundingClientRect();
-                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    setMatched(m => [...m, id]);
-                    playSound('splash');
-                    if (matched.length + 1 === 3) setTimeout(onWin, 1000);
-                    return true;
-                }
-                return false;
-            };
-            return (
-                <div className="flex flex-col h-full bg-sky-200 relative">
-                    <h2 className="text-center text-2xl font-bold text-pink-600 mt-6 bg-white/50 py-2 mx-8 rounded-full">Muddy Puddles!</h2>
-                    <div className="flex-grow flex flex-col justify-center items-center gap-8">
-                        <div className="flex gap-4 w-full justify-around px-4">
-                            {items.map(item => (
-                                <div key={item.id} ref={el => dropRefs.current[item.id] = el} className={`w-24 h-16 rounded-[50%] border-4 border-amber-900/20 flex items-center justify-center transition-all ${matched.includes(item.id) ? item.color : 'bg-amber-700'}`}>
-                                    {matched.includes(item.id) && <span className="text-4xl animate-bounce">🐷</span>}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="h-40 bg-green-300 border-t-8 border-green-500 relative flex items-center justify-around">
-                        {items.map(item => (!matched.includes(item.id) && (
-                            <Draggable key={item.id} id={item.id} onDrop={handleDrop}>
-                                <div className={`${item.bootColor} drop-shadow-lg transform hover:scale-110 transition-transform`}><div className="text-6xl filter drop-shadow-md">👢</div></div>
-                            </Draggable>
-                        )))}
-                    </div>
-                </div>
-            );
-        };
-
-        /** LEVEL 3: BLUEY **/
-        const BlueyLevel = ({ onWin }) => {
-            const [balloons, setBalloons] = useState([{ id: 1, y: 50, x: 50, vy: 0 }]);
-            const [score, setScore] = useState(0);
-            const requestRef = useRef();
-
-            const animate = () => {
-                setBalloons(prev => prev.map(b => {
-                    let newY = b.y + b.vy;
-                    let newVy = b.vy + 0.3;
-                    if (newY > 85) { newY = 85; newVy = -newVy * 0.6; }
-                    return { ...b, y: newY, vy: newVy };
+                setItems([
+                    { id: 1, type: 'hay', hidden: 'egg', x: 20, y: 40, revealed: false },
+                    { id: 2, type: 'hay', hidden: 'weasley', x: 50, y: 40, revealed: false },
+                    { id: 3, type: 'hay', hidden: 'egg', x: 80, y: 40, revealed: false },
+                ]);
+            }, []);
+            const handleTap = (id) => {
+                setItems(prev => prev.map(item => {
+                    if (item.id === id && !item.revealed) {
+                        sounds.pop();
+                        if (item.hidden === 'egg') { setFoundCount(c => c + 1); sounds.correct(); } 
+                        else if (item.hidden === 'weasley') { setMessage("You found Weasley!"); sounds.magic(); }
+                        return { ...item, revealed: true };
+                    }
+                    return item;
                 }));
-                requestRef.current = requestAnimationFrame(animate);
-            };
-            useEffect(() => { requestRef.current = requestAnimationFrame(animate); return () => cancelAnimationFrame(requestRef.current); }, []);
-
-            const tapBalloon = (id) => {
-                playSound('boing');
-                setScore(s => { const newScore = s + 1; if (newScore === 10) setTimeout(onWin, 500); return newScore; });
-                setBalloons(prev => prev.map(b => b.id === id ? { ...b, vy: -6, x: Math.min(90, Math.max(10, b.x + (Math.random() * 20 - 10))) } : b));
             };
             return (
-                <div className="flex flex-col h-full bg-blue-100 relative overflow-hidden">
-                    <div className="absolute bottom-20 w-full h-32 bg-[url('https://www.transparenttextures.com/patterns/wood-pattern.png')] bg-amber-200 border-t-4 border-white"></div>
-                    <div className="absolute bottom-0 w-full h-20 bg-green-400"></div>
-                    <h2 className="text-center text-3xl font-black text-blue-600 mt-8 drop-shadow-white">Keepy Uppy!</h2>
-                    <div className="text-center text-blue-400 font-bold text-xl">Score: {score}</div>
-                    {balloons.map(b => (
-                        <div key={b.id} onPointerDown={() => tapBalloon(b.id)} className="absolute w-24 h-32 cursor-pointer touch-manipulation" style={{ top: `${b.y}%`, left: `${b.x}%`, transform: 'translate(-50%, -50%)', transition: 'top 0.05s, left 0.2s' }}>
-                            <div className="w-20 h-24 bg-red-500 rounded-full shadow-xl border-r-4 border-red-400 flex items-center justify-center active:scale-90 transition-transform"><div className="w-4 h-8 bg-white/30 rounded-full absolute top-4 left-4 rotate-12"></div></div><div className="w-1 h-20 bg-white/50 mx-auto -mt-2"></div>
+                <div className="game-container bg-sky-200">
+                    <div className="p-4 flex justify-between items-center bg-amber-800/20">
+                        <button onClick={onBack} className="p-2 bg-white rounded-full shadow">⬅ Back</button>
+                        <h2 className="text-xl font-bold text-amber-900 font-serif">{message}</h2>
+                        <div className="flex gap-1">{[...Array(foundCount)].map((_,i) => <span key={i} className="text-2xl">🥚</span>)}</div>
+                    </div>
+                    <div className="flex-grow relative flex items-end justify-center pb-20">
+                        <div className="absolute inset-0 flex flex-col justify-end opacity-30 pointer-events-none">
+                            <div className="w-full h-1/3 bg-amber-100 border-t-4 border-amber-900"></div>
+                            <div className="absolute inset-0" style={{backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px', opacity: 0.2}}></div>
                         </div>
-                    ))}
-                    <div className="absolute bottom-10 left-4 text-6xl opacity-80">🐕</div>
-                    <div className="absolute bottom-10 right-4 text-5xl opacity-80 grayscale-[0.3]">🐕</div>
-                </div>
-            );
-        };
-
-        /** LEVEL 4: MS RACHEL **/
-        const MsRachelLevel = ({ onWin }) => {
-            const [cleaned, setCleaned] = useState(0);
-            const boxRef = useRef(null);
-            const toys = [{ id: 'bear', icon: '🧸' }, { id: 'car', icon: '🚗' }, { id: 'ball', icon: '⚽' }, { id: 'doll', icon: '🪆' }];
-            const handleDrop = (id, x, y) => {
-                const rect = boxRef.current.getBoundingClientRect();
-                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    setCleaned(c => c + 1);
-                    playSound('pop');
-                    if (cleaned + 1 === 4) setTimeout(onWin, 1000);
-                    return true;
-                }
-                return false;
-            };
-            return (
-                <div className="flex flex-col h-full bg-pink-50 relative">
-                    <div className="bg-white p-4 shadow-sm"><h2 className="text-center text-2xl font-bold text-pink-500">Put it in! Put it in!</h2></div>
-                    <div className="flex-grow flex items-center justify-center">
-                        <div ref={boxRef} className="w-64 h-48 bg-pink-200 rounded-lg border-4 border-pink-300 shadow-inner flex items-end justify-center pb-4 relative">
-                            <div className="text-pink-400 font-bold text-lg absolute top-4">TOY BOX</div>
-                            <div className="flex flex-wrap justify-center gap-2 mb-2 w-full px-4">{[...Array(cleaned)].map((_, i) => <div key={i} className="w-8 h-8 bg-white rounded-full opacity-50" />)}</div>
-                        </div>
-                    </div>
-                    <div className="h-40 bg-yellow-50 border-t border-yellow-100 relative">
-                        {toys.map((toy, i) => (cleaned <= i && (
-                            <Draggable key={toy.id} id={toy.id} onDrop={handleDrop} style={{ left: `${10 + (i * 20)}%`, top: `${20 + (i % 2) * 20}%` }}><div className="text-5xl filter drop-shadow-lg hover:scale-110 transition-transform">{toy.icon}</div></Draggable>
-                        )))}
-                    </div>
-                </div>
-            );
-        };
-
-        /** LEVEL 5: BLIPPI **/
-        const BlippiLevel = ({ onWin }) => {
-            const [loaded, setLoaded] = useState(0);
-            const blackTruckRef = useRef(null);
-            const orangeTruckRef = useRef(null);
-            const rocks = [{ id: 1, color: 'bg-slate-800', type: 'black' }, { id: 2, color: 'bg-orange-500', type: 'orange' }, { id: 3, color: 'bg-slate-800', type: 'black' }, { id: 4, color: 'bg-orange-500', type: 'orange' }];
-
-            const handleDrop = (id, x, y) => {
-                const rock = rocks.find(r => r.id === id);
-                const targetRef = rock.type === 'black' ? blackTruckRef : orangeTruckRef;
-                const rect = targetRef.current.getBoundingClientRect();
-                if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-                    setLoaded(c => c + 1);
-                    playSound('pop');
-                    if (loaded + 1 === 4) setTimeout(onWin, 1000);
-                    return true;
-                }
-                return false;
-            };
-            return (
-                <div className="flex flex-col h-full bg-sky-100 relative">
-                    <div className="bg-orange-500 p-2 flex justify-center items-center gap-2 shadow-md"><div className="bg-blue-600 text-white font-bold px-2 rounded">B</div><h2 className="text-white font-bold text-xl uppercase tracking-tighter">Excavator Site</h2></div>
-                    <div className="flex-grow flex flex-col justify-center items-center gap-8 w-full px-4">
-                        <div ref={blackTruckRef} className="w-full max-w-xs h-24 bg-slate-900 rounded-lg border-4 border-slate-600 relative flex items-center justify-center"><span className="text-slate-500 font-bold opacity-50">POWER WHEEL</span><Truck className="text-white absolute -left-4 -bottom-2" size={40} /></div>
-                        <div ref={orangeTruckRef} className="w-full max-w-xs h-24 bg-orange-500 rounded-lg border-4 border-orange-600 relative flex items-center justify-center"><span className="text-orange-800 font-bold opacity-50">CONSTRUCTION</span><Truck className="text-blue-600 absolute -right-4 -bottom-2 transform scale-x-[-1]" size={40} /></div>
-                    </div>
-                    <div className="h-32 bg-amber-800 rounded-t-[50%] mx-4 flex items-center justify-center gap-4 relative z-10">
-                        {rocks.map((rock, i) => (loaded <= i && (
-                            <Draggable key={rock.id} id={rock.id} onDrop={handleDrop}><div className={`w-16 h-16 ${rock.color} rounded-2xl border-b-4 border-black/20 shadow-lg flex items-center justify-center`}><div className="w-2 h-2 bg-white/20 rounded-full"></div></div></Draggable>
-                        )))}
-                    </div>
-                </div>
-            );
-        };
-
-        /** MAIN APP **/
-        const TreehouseGames = () => {
-            const [activeGame, setActiveGame] = useState(null);
-            const [showWin, setShowWin] = useState(false);
-            useEffect(() => { dismissLoader(); }, []);
-            const handleWin = () => { playSound('win'); setShowWin(true); };
-            const reset = () => { setActiveGame(null); setShowWin(false); };
-            const MenuButton = ({ icon, color, label, onClick }) => (
-                <button onClick={onClick} className={`aspect-square rounded-3xl ${color} shadow-[0_6px_0_rgba(0,0,0,0.2)] active:shadow-none active:translate-y-2 transition-all flex flex-col items-center justify-center border-4 border-white/20 p-2`}><div className="bg-white/20 p-3 rounded-full mb-2 backdrop-blur-sm">{icon}</div><span className="text-white font-bold text-sm uppercase tracking-wide">{label}</span></button>
-            );
-            return (
-                <div className="fixed inset-0 bg-slate-50 font-sans select-none touch-none overflow-hidden">
-                    {activeGame && (
-                        <div className="absolute top-0 left-0 right-0 h-16 z-40 px-4 flex items-center justify-between pointer-events-none"><button onClick={reset} className="pointer-events-auto bg-white p-2 rounded-full shadow-md text-slate-600 hover:bg-slate-100"><Home /></button></div>
-                    )}
-                    <div className="h-full w-full">
-                        {!activeGame && (
-                            <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-b from-purple-600 to-blue-600">
-                                <h1 className="text-4xl font-black text-white text-center mb-2 drop-shadow-md">Treehouse Games</h1>
-                                <p className="text-white/80 mb-8 font-bold">Pick a Channel!</p>
-                                <div className="grid grid-cols-2 gap-4 w-full max-w-md">
-                                    <MenuButton label="Wizard World" color="bg-slate-800" icon={<Zap className="text-yellow-400" size={32} />} onClick={() => setActiveGame('hp')} />
-                                    <MenuButton label="Muddy Puddles" color="bg-sky-400" icon={<CloudRain className="text-blue-100" size={32} />} onClick={() => setActiveGame('peppa')} />
-                                    <MenuButton label="Keepy Uppy" color="bg-blue-500" icon={<Play className="text-red-200" size={32} />} onClick={() => setActiveGame('bluey')} />
-                                    <MenuButton label="Clean Up" color="bg-pink-400" icon={<Music className="text-pink-100" size={32} />} onClick={() => setActiveGame('rachel')} />
-                                </div>
-                                <div className="mt-4 w-full max-w-md">
-                                    <button onClick={() => setActiveGame('blippi')} className="w-full bg-orange-500 rounded-3xl shadow-[0_6px_0_rgba(0,0,0,0.2)] p-4 flex items-center justify-center gap-4 border-4 border-white/20 active:translate-y-2 active:shadow-none transition-all"><Hammer className="text-blue-700" size={32} /><span className="text-white font-bold text-xl uppercase">Excavator Site</span></button>
-                                </div>
+                        {items.map(item => (
+                            <div key={item.id} onClick={() => handleTap(item.id)} className="absolute transition-all duration-500 cursor-pointer" style={{ left: `${item.x}%`, top: `${item.y}%`, transform: item.revealed ? 'translateY(-100px) rotate(10deg)' : 'translateY(0)', opacity: item.revealed ? 0 : 1 }}>
+                                <div className="w-32 h-24 bg-yellow-600 rounded-lg border-4 border-yellow-800 flex items-center justify-center shadow-xl"><span className="text-4xl">🌾</span></div>
                             </div>
-                        )}
-                        {activeGame === 'hp' && <HarryPotterLevel onWin={handleWin} />}
-                        {activeGame === 'peppa' && <PeppaLevel onWin={handleWin} />}
-                        {activeGame === 'bluey' && <BlueyLevel onWin={handleWin} />}
-                        {activeGame === 'rachel' && <MsRachelLevel onWin={handleWin} />}
-                        {activeGame === 'blippi' && <BlippiLevel onWin={handleWin} />}
+                        ))}
+                        {items.map(item => (
+                            <div key={`hidden-${item.id}`} className="absolute" style={{ left: `${item.x}%`, top: `${item.y}%` }}>
+                                {item.hidden === 'egg' && <span className="text-5xl drop-shadow-lg animate-bounce">🥚</span>}
+                                {item.hidden === 'weasley' && <WeasleyCat className="w-24 h-24 animate-bounce" />}
+                            </div>
+                        ))}
                     </div>
-                    {showWin && (
-                        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-50 flex flex-col items-center justify-center animate-in zoom-in duration-300">
-                            <div className="flex gap-2 mb-4"><Star className="text-yellow-400 w-12 h-12 animate-bounce" fill="currentColor" /><Star className="text-yellow-400 w-12 h-12 animate-bounce delay-100" fill="currentColor" /><Star className="text-yellow-400 w-12 h-12 animate-bounce delay-200" fill="currentColor" /></div><h2 className="text-5xl font-bold text-white mb-8 drop-shadow-lg">You Did It!</h2><div className="flex gap-4"><button onClick={reset} className="bg-white text-purple-600 py-4 px-8 rounded-2xl text-xl font-bold shadow-xl active:scale-95 transition-transform flex items-center gap-2"><ArrowLeft /> Back</button><button onClick={() => setShowWin(false)} className="bg-green-500 text-white py-4 px-8 rounded-2xl text-xl font-bold shadow-xl active:scale-95 transition-transform flex items-center gap-2"><Repeat /> Again</button></div>
-                        </div>
-                    )}
                 </div>
             );
         };
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<TreehouseGames />);
-    </script>
-</body>
-</html>
-
-
+        const TruckGame = ({ onBack }) => {
+            const [truckY, se
